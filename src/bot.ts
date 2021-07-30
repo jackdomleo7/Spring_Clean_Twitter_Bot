@@ -1,9 +1,18 @@
 import * as dotenv from 'dotenv'
 import axios, { AxiosResponse } from 'axios'
+import { TwitterClient } from 'twitter-api-client';
+import { sub, differenceInMonths } from 'date-fns'
 
 import { IWhiteList } from './types'
 
 dotenv.config({ path: './.env' })
+
+const Twitter = new TwitterClient({
+  apiKey: process.env.TWITTER_API_KEY!,
+  apiSecret: process.env.TWITTER_API_KEY_SECRET!,
+  accessToken: process.env.TWITTER_ACCESS_TOKEN!,
+  accessTokenSecret: process.env.TWITTER_ACCESS_TOKEN_SECRET!,
+})
 
 async function getWhitelistedHandles(): Promise<string[] | undefined> {
   try {
@@ -16,10 +25,61 @@ async function getWhitelistedHandles(): Promise<string[] | undefined> {
   }
 }
 
-(async function(){
-  const whitelistedHandles = await getWhitelistedHandles()
+async function getTwitterFriends(): Promise<Record<string, any>[] | undefined> {
+  try {
+    const response = await Twitter.accountsAndUsers.accountSettings()
+    const screen_name = response.screen_name
+    const friends = await Twitter.accountsAndUsers.friendsList({ screen_name })
+    return friends.users
+  }
+  catch(e: any) {
+    console.error(e)
+    return undefined
+  }
+}
 
-  // Terminate the script if a connection to the GitHub gist cannot be established - otherwise we will have no list of whitelisted users and may accidentally unfollow a whitelisted user
-  if (!whitelistedHandles) process.exit()
-  console.log('whitelisted handles:', whitelistedHandles)
+function unfollowInactiveUsers(friends: Record<string, any>[], whitelistedHandles: string[]): void {
+  friends.forEach(async (friend: Record<string, any>) => {
+    if (!whitelistedHandles.includes(friend.screen_name)) {
+      const lastTweet = Date.parse(friend.status.created_at)
+      const threeMonthsAgo = sub(new Date(), { months: 3 })
+      if (differenceInMonths(lastTweet, threeMonthsAgo) < 0) {
+        await Twitter.accountsAndUsers.friendshipsDestroy({ screen_name: friend.screen_name })
+        console.log(`Unfollowing @${friend.screen_name} (${friend.name}) because they haven't tweeted in the past 3 months and they are not a whitelisted user`)
+      }
+      else {
+        console.log(`Keep following @${friend.screen_name} (${friend.name}) because they meet the criteria`)
+      }
+    } else {
+      console.log(`Skipping @${friend.screen_name} (${friend.name}) because they are a whitelisted user`)
+    }
+  })
+}
+
+// Start of script
+(async function(){
+  /*******************************/
+  /* START GET WHITELISTED USERS */
+  /*******************************/
+
+  const whitelistedHandles = await getWhitelistedHandles()
+  if (!whitelistedHandles) process.exit() // Terminate the script if a connection to the GitHub gist cannot be established - otherwise we will have no list of whitelisted users and may accidentally unfollow a whitelisted user
+
+  /*****************************/
+  /* END GET WHITELISTED USERS */
+  /*****************************/
+
+
+  /*************************************************/
+  /* START GET TWITTER FRIENDS (PEOPLE YOU FOLLOW) */
+  /*************************************************/
+
+  const twitterFriends = await getTwitterFriends()
+  if (!twitterFriends) process.exit() // Terminate the script if we cannot get a list of friends from Twitter - no point in running the script anymore
+
+  /***********************************************/
+  /* END GET TWITTER FRIENDS (PEOPLE YOU FOLLOW) */
+  /***********************************************/
+
+  unfollowInactiveUsers(twitterFriends, whitelistedHandles)
 })()

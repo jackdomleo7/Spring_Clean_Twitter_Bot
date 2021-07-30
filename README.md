@@ -34,7 +34,7 @@ As a disclaimer, this is not a growth hacking technique, but a project to help i
 
 1. Create a `.env` file in the root folder. This file is ignored from git for security reasons since we'll be storing API keys and access tokens. Add the following keys to the file:
    - `WHITELIST_GIST_ID`
-   - `TWITTER_CONSUMER_KEY`
-   - `TWITTER_CONSUMER_SECRET`
+   - `TWITTER_API_KEY`
+   - `TWITTER_API_KEY_SECRET`
    - `TWITTER_ACCESS_TOKEN`
    - `TWITTER_ACCESS_TOKEN_SECRET`
