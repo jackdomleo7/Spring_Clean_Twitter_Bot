@@ -1,9 +1,9 @@
 import * as dotenv from 'dotenv'
 import axios, { AxiosResponse } from 'axios'
-import { TwitterClient } from 'twitter-api-client';
-import { sub, differenceInMonths } from 'date-fns'
+import { TwitterClient } from 'twitter-api-client'
 
-import { IWhiteList } from './types'
+import { IWhiteList, ICriteria } from './types'
+import { meetsAllCriteria, showUnmetCriteria, hasTweetedInThreeMonths } from './criteria'
 
 dotenv.config({ path: './.env' })
 
@@ -41,14 +41,16 @@ async function getTwitterFriends(): Promise<Record<string, any>[] | undefined> {
 function unfollowInactiveUsers(friends: Record<string, any>[], whitelistedHandles: string[]): void {
   friends.forEach(async (friend: Record<string, any>) => {
     if (!whitelistedHandles.includes(friend.screen_name)) {
-      const lastTweet = Date.parse(friend.status.created_at)
-      const threeMonthsAgo = sub(new Date(), { months: 3 })
-      if (differenceInMonths(lastTweet, threeMonthsAgo) < 0) {
-        await Twitter.accountsAndUsers.friendshipsDestroy({ screen_name: friend.screen_name })
-        console.log(`Unfollowing @${friend.screen_name} (${friend.name}) because they haven't tweeted in the past 3 months and they are not a whitelisted user`)
+      const criteria: ICriteria = {
+        tweetedInThreeMonths: hasTweetedInThreeMonths(friend)
+      }
+
+      if (meetsAllCriteria(criteria)) {
+        console.log(`Keep following @${friend.screen_name} (${friend.name}) because they meet the criteria`)
       }
       else {
-        console.log(`Keep following @${friend.screen_name} (${friend.name}) because they meet the criteria`)
+        await Twitter.accountsAndUsers.friendshipsDestroy({ screen_name: friend.screen_name })
+        console.log(`Unfollowing @${friend.screen_name} (${friend.name}) because they are not a whitelisted user, ${showUnmetCriteria(criteria)}`)
       }
     } else {
       console.log(`Skipping @${friend.screen_name} (${friend.name}) because they are a whitelisted user`)
