@@ -17,7 +17,9 @@ const Twitter = new TwitterClient({
 async function getWhitelistedHandles(): Promise<string[] | undefined> {
   try {
     const response: AxiosResponse<Record<string, any>> = await axios.get(`https://api.github.com/gists/${process.env.WHITELIST_GIST_ID}`)
-    return (JSON.parse(response.data.files[Object.keys(response.data.files)[0]].content) as IWhiteList).handles
+    const handles = (JSON.parse(response.data.files[Object.keys(response.data.files)[0]].content) as IWhiteList).handles
+    console.log(`${handles.length} whitelisted handles found`)
+    return handles
   }
   catch(e: any) {
     console.error(e)
