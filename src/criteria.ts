@@ -1,5 +1,7 @@
 import { sub, differenceInMonths } from 'date-fns'
+
 import { ICriteria } from './types'
+import settings from './settings.json'
 
 /***********/
 /* HELPERS */
@@ -27,13 +29,13 @@ export function showUnmetCriteria(criteria: ICriteria): string {
 /* CRITERIA */
 /***********/
 
-export function hasTweetedInThreeMonths(friend: Record<string, any>): boolean | string {
+export function hasTweetedInXMonths(friend: Record<string, any>): boolean | string {
   const lastTweet = Date.parse(friend.status.created_at)
-  const threeMonthsAgo = sub(new Date(), { months: 3 })
+  const threeMonthsAgo = sub(new Date(), { months: settings.criteria.tweetedInXMonths.no_of_months })
   if (differenceInMonths(lastTweet, threeMonthsAgo) >= 0) {
     return true
   }
   else {
-    return `they haven't tweeted in 3 months`
+    return `they haven't tweeted in ${settings.criteria.tweetedInXMonths.no_of_months} ${settings.criteria.tweetedInXMonths.no_of_months === 1 ? 'month' : 'months'}`
   }
 }
