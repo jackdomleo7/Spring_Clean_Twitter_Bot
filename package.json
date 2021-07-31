@@ -2,9 +2,9 @@
   "name": "spring_clean_twitter_bot",
   "version": "1.0.0",
   "description": "A Twitter bot to automatically unfollow inactive accounts.",
-  "main": "bot.js",
+  "main": "index.js",
   "scripts": {
-    "dev": "tsnd --respawn -r @babel/register src/bot.ts",
+    "dev": "tsnd --respawn -r @babel/register src/index.ts",
     "build": "babel ./src -d ./dist --extensions .ts"
   },
   "repository": {
