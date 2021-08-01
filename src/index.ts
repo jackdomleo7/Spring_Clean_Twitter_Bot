@@ -75,8 +75,7 @@ function unfollowInactiveUsers(friends: Record<string, any>[], whitelistedHandle
 // Start of script
 (async function(){
   const whitelistedHandles = await getWhitelistedHandles()
-  if (!whitelistedHandles)
-  {
+  if (!whitelistedHandles) {
     console.log('Terminating script because something went wrong whilst retrieving the whitelisted users')
     process.exit() // Terminate the script if a connection to the GitHub gist cannot be established - otherwise we will have no list of whitelisted users and may accidentally unfollow a whitelisted user
   }
