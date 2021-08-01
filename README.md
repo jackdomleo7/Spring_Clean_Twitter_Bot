@@ -73,7 +73,7 @@ These steps are with the assumption that you use this template and do not add or
 5. Navigate to [https://gist.github.com](https://gist.github.com) to create a new gist. Name it anything, as long as it is a `.json` (e.g. `twitter-user-whitelist.json`) and fill it with the following (you can add an array of strings of whitelisted user Twitter handles to the `handles` property - do not prefix with "@"), then click "Create secret gist":
 ```json
 {
-  handles: [
+  "handles": [
     "jackdomleo7"
   ]
 }
