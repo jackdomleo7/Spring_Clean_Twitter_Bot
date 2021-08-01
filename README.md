@@ -74,7 +74,7 @@ These steps are with the assumption that you use this template and do not add or
 ```json
 {
   handles: [
-    'jackdomleo7'
+    "jackdomleo7"
   ]
 }
 ```
