@@ -75,10 +75,17 @@ function unfollowInactiveUsers(friends: Record<string, any>[], whitelistedHandle
 // Start of script
 (async function(){
   const whitelistedHandles = await getWhitelistedHandles()
-  if (!whitelistedHandles) process.exit() // Terminate the script if a connection to the GitHub gist cannot be established - otherwise we will have no list of whitelisted users and may accidentally unfollow a whitelisted user
+  if (!whitelistedHandles)
+  {
+    console.log('Terminating script because something went wrong whilst retrieving the whitelisted users')
+    process.exit() // Terminate the script if a connection to the GitHub gist cannot be established - otherwise we will have no list of whitelisted users and may accidentally unfollow a whitelisted user
+  }
 
   const twitterFriends = await getTwitterFriends()
-  if (!twitterFriends) process.exit() // Terminate the script if we cannot get a list of friends from Twitter - no point in running the script anymore
+  if (!twitterFriends) {
+    console.log('Terminating script because something went wrong whilst retrieving your Twitter friends')
+    process.exit() // Terminate the script if we cannot get a list of friends from Twitter - no point in running the script anymore
+  }
 
   unfollowInactiveUsers(twitterFriends, whitelistedHandles)
 })()
