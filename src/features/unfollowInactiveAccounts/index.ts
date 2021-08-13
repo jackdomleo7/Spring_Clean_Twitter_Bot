@@ -11,7 +11,7 @@ dotenv.config({ path: './.env' })
 async function getWhitelistedHandles(): Promise<string[] | undefined> {
   try {
     const response: AxiosResponse<Record<string, any>> = await axios.get(`https://api.github.com/gists/${process.env.WHITELIST_GIST_ID}`)
-    const handles = (JSON.parse(response.data.files[Object.keys(response.data.files)[0]].content) as IWhiteList).handles
+    const handles = (JSON.parse(response.data.files['account-whitelist.json'].content) as IWhiteList).handles
     settings.features.unfollowInactiveAccounts.show_logging.whitelisted_handles.found && console.log(`${handles.length} whitelisted handles found`)
     return handles
   }
@@ -68,15 +68,17 @@ function unfollowInactiveUsers(friends: Record<string, any>[], whitelistedHandle
 export default async function unfollowInactiveAccounts(): Promise<void> {
   const whitelistedHandles = await getWhitelistedHandles()
   if (!whitelistedHandles) {
-    console.log('Terminating script because something went wrong whilst retrieving the whitelisted users')
-    process.exit() // Terminate the script if a connection to the GitHub gist cannot be established - otherwise we will have no list of whitelisted users and may accidentally unfollow a whitelisted user
+    // Skip this feature if a connection to the GitHub gist cannot be established - otherwise we will have no list of whitelisted users and may accidentally unfollow a whitelisted user
+    console.log('Skipping unfollowInactiveAccounts feature because something went wrong whilst retrieving the whitelisted users')
   }
-
-  const twitterFriends = await getTwitterFriends()
-  if (!twitterFriends) {
-    console.log('Terminating script because something went wrong whilst retrieving your Twitter friends')
-    process.exit() // Terminate the script if we cannot get a list of friends from Twitter - no point in running the script anymore
+  else {
+    const twitterFriends = await getTwitterFriends()
+    if (!twitterFriends) {
+      // Skip this feature if we cannot get a list of friends from Twitter - no point in proceeding with the feature
+      console.log('Skipping unfollowInactiveAccounts feature because something went wrong whilst retrieving your Twitter friends')
+    }
+    else {
+      unfollowInactiveUsers(twitterFriends, whitelistedHandles)
+    }
   }
-
-  unfollowInactiveUsers(twitterFriends, whitelistedHandles)
 }

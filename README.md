@@ -70,7 +70,7 @@ These steps are with the assumption that you use this template and do not add or
    - `TWITTER_ACCESS_TOKEN`
    - `TWITTER_ACCESS_TOKEN_SECRET`
 4. Navigate to [https://developer.twitter.com](https://developer.twitter.com) and sign up for a developer account. Create an app, call it something like "<code>${Your handle}</code> Spring Clean Twitter Bot", then go to settings and enable "Read and Write access". Then you will be presented with an API Key, an API Key Secret, a Bearer Token, an Access Token and an Access Token Secret. Copy and paste these to your `.env` file (you don't need the bearer token).
-5. Navigate to [https://gist.github.com](https://gist.github.com) to create a new gist. Name it anything, as long as it is a `.json` (e.g. `twitter-user-whitelist.json`) and fill it with the following (you can add an array of strings of whitelisted user Twitter handles to the `handles` property - do not prefix with "@"), then click "Create secret gist":
+5. Navigate to [https://gist.github.com](https://gist.github.com) and create a new gist with a file called `account-whitelist.json` and fill it with the following (you can add an array of strings of whitelisted user Twitter handles to the `handles` property - do not prefix with "@"), then click "Create secret gist":
 ```json
 {
   "handles": [
