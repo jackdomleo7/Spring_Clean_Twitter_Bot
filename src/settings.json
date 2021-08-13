@@ -6,7 +6,7 @@
           "no_of_months": 3
         }
       },
-      "actually_unfollow_accounts": false,
+      "actually_unfollow_accounts": true,
       "show_logging": {
         "whitelisted_handles": {
           "found": true
