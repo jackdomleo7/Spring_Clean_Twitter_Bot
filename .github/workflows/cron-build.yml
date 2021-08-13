@@ -27,6 +27,11 @@ jobs:
         TWITTER_API_KEY_SECRET: ${{ secrets.TWITTER_API_KEY_SECRET }}
         TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
         TWITTER_ACCESS_TOKEN_SECRET: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
+    - run: echo ${{ WHITELIST_GIST_ID }}
+    - run: echo ${{ TWITTER_API_KEY }}
+    - run: echo ${{ TWITTER_API_KEY_SECRET }}
+    - run: echo ${{ TWITTER_ACCESS_TOKEN }}
+    - run: echo ${{ TWITTER_ACCESS_TOKEN_SECRET }}
     - run: npm ci
     - run: npm run build
     - run: node dist
