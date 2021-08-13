@@ -40,7 +40,7 @@ async function getTwitterFriends(): Promise<Record<string, any>[] | undefined> {
   }
 }
 
-function unfollowInactiveUsers(friends: Record<string, any>[], whitelistedHandles: string[]): void {
+function unfollow(friends: Record<string, any>[], whitelistedHandles: string[]): void {
   let friendsUnfollowed = 0
 
   friends.forEach(async (friend: Record<string, any>) => {
@@ -78,7 +78,7 @@ export default async function unfollowInactiveAccounts(): Promise<void> {
       console.log('Skipping unfollowInactiveAccounts feature because something went wrong whilst retrieving your Twitter friends')
     }
     else {
-      unfollowInactiveUsers(twitterFriends, whitelistedHandles)
+      unfollow(twitterFriends, whitelistedHandles)
     }
   }
 }
