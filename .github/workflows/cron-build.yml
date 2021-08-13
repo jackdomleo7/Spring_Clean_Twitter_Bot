@@ -21,7 +21,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-      env:
         WHITELIST_GIST_ID: ${{ secrets.WHITELIST_GIST_ID }}
         TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
         TWITTER_API_KEY_SECRET: ${{ secrets.TWITTER_API_KEY_SECRET }}
