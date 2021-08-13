@@ -1,20 +1,24 @@
 {
-  "actually_unfollow_accounts": true,
-  "show_logging": {
-    "whitelisted_handles": {
-      "found": true
-    },
-    "friends": {
-      "found": true,
-      "unfollowed": true,
-      "kept": true,
-      "whitelisted": true,
-      "summary": true
-    }
-  },
-  "criteria": {
-    "tweetedInXMonths": {
-      "no_of_months": 3
+  "features" :{
+    "unfollowInactiveAccounts": {
+      "criteria": {
+        "tweetedInXMonths": {
+          "no_of_months": 3
+        }
+      },
+      "actually_unfollow_accounts": false,
+      "show_logging": {
+        "whitelisted_handles": {
+          "found": true
+        },
+        "friends": {
+          "found": true,
+          "unfollowed": true,
+          "kept": true,
+          "whitelisted": true,
+          "summary": true
+        }
+      }
     }
   }
 }
