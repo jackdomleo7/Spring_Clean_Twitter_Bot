@@ -1,6 +1,8 @@
 name: Schedule bot monthly
 
 on:
+  push:
+    branches: [master]
   schedule:
     #- cron: '0 0 1 * *'  # every first day of the month
     - cron: '*/2 * * * *'  # every 5 mins
