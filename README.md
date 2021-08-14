@@ -7,25 +7,27 @@ It has become evident that manually maintaining my Twitter account is very time-
 
 ## How it works
 
-This is a script that can run on a serverless function (mine runs on Netlify) but doesn't have to - it can just be ran from your computer. It will go through all the features and criteria listed to clean up your Twitter account.
+This is a script that runs on a GitHub Action workflow, scheduled to build and run on the first day of each (it can also be run manually from your local machine). It will go through all the features and criteria listed to clean up your Twitter account.
 
 I have made this so that it can be a template or forked by anyone wanting to try it out.
 
 ### Technology
 
 - TypeScript
-- Netlify Serverless Functions
+- GitHub Actions & cron scheduling
 - Twitter API
 - GitHub Gists
-- Environment variables
+- Encrypted secrets
 
 ### Features & Criteria
 
-<small>As a disclaimer, this is not a growth hacking technique, but a project to help improve my skills, add a project to my portfolio and to help clean up my Twitter profile. I don't feel I have to follow everyone who follows me and I only want to follow accounts that are active.</small>
+<small>As a disclaimer, this is not a growth hacking technique, but a project to help improve my skills and to help clean up my Twitter profile. I don't feel I have to follow everyone who follows me and I only want to follow accounts that are active.</small>
 
 This project comes with a `settings.json` file that is useful for debugging and configuring the project.
 
-#### Unfollow inactive accounts
+'Features' are a piece of functionality, and 'criteria' are a checklist for something to meet a feature.
+
+#### Feature 1: Unfollow inactive accounts
 
 The script will automatically unfollow inactive users based on the criteria set below. I have made it so you can create a list of whitelisted users that will never be unfollowed (typically your friends & family or seasonal accounts like Hacktoberfest). Having a public list of whitelisted may be problematic, so I have a private GitHub Gist with a JSON file of an array of whitelisted users, which the script will then retrieve.
 
@@ -79,6 +81,8 @@ These steps are with the assumption that you use this template and do not add or
 }
 ```
 6. Run the script
+
+When you push your code to GitHub, it will automatically create a GitHub Action because of the `.github/workflows/cron-build.yml` file. If you're uncomfortable with this and would rather run the script manually, either remove the file or disable the workflow.
 
 ---
 
