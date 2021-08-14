@@ -14,8 +14,8 @@
         "friends": {
           "found": true,
           "unfollowed": true,
-          "kept": true,
-          "whitelisted": true,
+          "kept": false,
+          "whitelisted": false,
           "summary": true
         }
       }
