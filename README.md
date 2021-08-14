@@ -65,7 +65,7 @@ These steps are with the assumption that you use this template and do not add or
 
 1. Use this repository as a template, clone it locally and run `npm i`
 2. Edit my details to your details in `package.json`, `README` & `src/settings.json`
-3. Create a `.env` file in the root folder. This file is ignored from git for security reasons since we'll be storing API keys and access tokens. Add the following keys to the file:
+3. Create a `.env` file in the root folder. This file is ignored from git for security reasons since we'll be storing API keys and access tokens. Since this is ignored from git, your GitHub action won't have any keys and tokens to read. So, as well as adding them to a git ignored `.env` file, you'll also want to add these keys and tokens to your [repository's secrets](https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository). Add the following keys to the file:
    - `WHITELIST_GIST_ID`
    - `TWITTER_API_KEY`
    - `TWITTER_API_KEY_SECRET`
