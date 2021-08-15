@@ -1,3 +1,5 @@
+[![Schedule bot monthly](https://github.com/jackdomleo7/Spring_Clean_Twitter_Bot/actions/workflows/cron-build.yml/badge.svg?branch=main)](https://github.com/jackdomleo7/Spring_Clean_Twitter_Bot/actions/workflows/cron-build.yml)
+
 # Spring Clean Twitter Bot
 A Twitter bot to automatically clean up my Twitter account.
 
