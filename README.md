@@ -9,7 +9,7 @@ It has become evident that manually maintaining my Twitter account is very time-
 
 ## How it works
 
-This is a script that runs on a GitHub Action workflow, scheduled to build and run on the first day of each (it can also be run manually from your local machine). It will go through all the features and criteria listed to clean up your Twitter account.
+This is a script that runs on a GitHub Action workflow, scheduled to build and run on the first day of each month (it can also be run manually from your local machine). It will go through all the features and criteria listed to clean up your Twitter account.
 
 I have made this so that it can be a template or forked by anyone wanting to try it out.
 
@@ -19,11 +19,9 @@ I have made this so that it can be a template or forked by anyone wanting to try
 - GitHub Actions & cron scheduling
 - Twitter API
 - GitHub Gists
-- Encrypted secrets
+- Encrypted secrets (dotenv)
 
 ### Features & Criteria
-
-<small>As a disclaimer, this is not a growth hacking technique, but a project to help improve my skills and to help clean up my Twitter profile. I don't feel I have to follow everyone who follows me and I only want to follow accounts that are active.</small>
 
 This project comes with a `settings.json` file that is useful for debugging and configuring the project.
 
@@ -32,6 +30,8 @@ This project comes with a `settings.json` file that is useful for debugging and 
 #### Feature 1: Unfollow inactive accounts
 
 The script will automatically unfollow inactive users based on the criteria set below. I have made it so you can create a list of whitelisted users that will never be unfollowed (typically your friends & family or seasonal accounts like Hacktoberfest). Having a public list of whitelisted may be problematic, so I have a private GitHub Gist with a JSON file of an array of whitelisted users, which the script will then retrieve.
+
+<small>As a disclaimer, this is not a growth hacking technique, but that will help me clean up my Twitter profile. I don't feel I have to follow everyone who follows me and I only want to follow accounts that are active.</small>
 
 Criteria:
   - Someone who hasn't tweeted in 3 months
@@ -54,7 +54,7 @@ npm run build
 
 ## Create your own Spring Clean Twitter Bot
 
-You can easily start using this on your own Twitter account by clicking "Use this template" and following the steps below.
+You can easily start using this on your own Twitter account by clicking "Use this template" or forking this repository and following the steps below.
 
 ### Prerequisites
 
@@ -73,8 +73,8 @@ These steps are with the assumption that you use this template and do not add or
    - `TWITTER_API_KEY_SECRET`
    - `TWITTER_ACCESS_TOKEN`
    - `TWITTER_ACCESS_TOKEN_SECRET`
-4. Navigate to [https://developer.twitter.com](https://developer.twitter.com) and sign up for a developer account. Create an app, call it something like "<code>${Your handle}</code> Spring Clean Twitter Bot", then go to settings and enable "Read and Write access". Then you will be presented with an API Key, an API Key Secret, a Bearer Token, an Access Token and an Access Token Secret. Copy and paste these to your `.env` file (you don't need the bearer token).
-5. Navigate to [https://gist.github.com](https://gist.github.com) and create a new gist with a file called `account-whitelist.json` and fill it with the following (you can add an array of strings of whitelisted user Twitter handles to the `handles` property - do not prefix with "@"), then click "Create secret gist":
+4. Navigate to [https://developer.twitter.com](https://developer.twitter.com) and sign up for a developer account. Create an app, call it something like "<code>${Your handle}</code> Spring Clean Twitter Bot", then go to settings and enable "Read and Write access". Then you will be presented with an API Key, an API Key Secret, a Bearer Token, an Access Token and an Access Token Secret. Copy and paste these to your `.env` file and add to your repository secrets (you don't need the bearer token).
+5. Navigate to [https://gist.github.com](https://gist.github.com) and create a new gist with a file called `account-whitelist.json` and fill it with the following (you can add an array of strings of whitelisted user Twitter handles to the `handles` property - do not prefix with "@"), then click "Create secret gist". After creating the secret gist, get the gist ID from the url and add this to the `WHITELIST_GIST_ID` variable in your `.env` file and your repository's secret.
 ```json
 {
   "handles": [
