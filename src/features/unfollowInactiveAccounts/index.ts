@@ -1,5 +1,6 @@
 import * as dotenv from 'dotenv'
 import axios, { AxiosResponse } from 'axios'
+import logSymbols from 'log-symbols'
 
 import { meetsAllCriteria, showUnmetCriteria, hasTweetedInXMonths } from './criteria'
 import { IWhiteList, ICriteria } from './types'
@@ -12,7 +13,7 @@ async function getWhitelistedHandles(): Promise<string[] | undefined> {
   try {
     const response: AxiosResponse<Record<string, any>> = await axios.get(`https://api.github.com/gists/${process.env.WHITELIST_GIST_ID}`)
     const handles = (JSON.parse(response.data.files['account-whitelist.json'].content) as IWhiteList).handles
-    settings.features.unfollowInactiveAccounts.show_logging.whitelisted_handles.found && console.log(`${handles.length} whitelisted handles found`)
+    settings.features.unfollowInactiveAccounts.show_logging.whitelisted_handles.found && console.log(logSymbols.info, `${handles.length} whitelisted handles found`)
     return handles
   }
   catch(e: any) {
@@ -31,7 +32,7 @@ async function getTwitterFriends(): Promise<Record<string, any>[] | undefined> {
       friends = await Twitter.accountsAndUsers.friendsList({ screen_name, count: 200, cursor: friends.next_cursor })
       users = [...users, ...friends.users]
     }
-    settings.features.unfollowInactiveAccounts.show_logging.friends.found && console.log(`${users.length} Twitter friends found`)
+    settings.features.unfollowInactiveAccounts.show_logging.friends.found && console.log(logSymbols.info, `${users.length} Twitter friends found`)
     return users
   }
   catch(e: any) {
@@ -62,20 +63,20 @@ function unfollow(friends: Record<string, any>[], whitelistedHandles: string[]):
     }
   })
 
-  settings.features.unfollowInactiveAccounts.show_logging.friends.summary && console.log(`${friendsUnfollowed} of ${friends.length} friends unfollowed (you are now following ${friends.length - friendsUnfollowed} accounts)`)
+  settings.features.unfollowInactiveAccounts.show_logging.friends.summary && console.log(logSymbols.success, `${friendsUnfollowed} of ${friends.length} friends unfollowed (you are now following ${friends.length - friendsUnfollowed} accounts)`)
 }
 
 export default async function unfollowInactiveAccounts(): Promise<void> {
   const whitelistedHandles = await getWhitelistedHandles()
   if (!whitelistedHandles) {
     // Skip this feature if a connection to the GitHub gist cannot be established - otherwise we will have no list of whitelisted users and may accidentally unfollow a whitelisted user
-    console.log('Skipping unfollowInactiveAccounts feature because something went wrong whilst retrieving the whitelisted users')
+    console.log(logSymbols.error, 'Skipping unfollowInactiveAccounts feature because something went wrong whilst retrieving the whitelisted users')
   }
   else {
     const twitterFriends = await getTwitterFriends()
     if (!twitterFriends) {
       // Skip this feature if we cannot get a list of friends from Twitter - no point in proceeding with the feature
-      console.log('Skipping unfollowInactiveAccounts feature because something went wrong whilst retrieving your Twitter friends')
+      console.log(logSymbols.error, 'Skipping unfollowInactiveAccounts feature because something went wrong whilst retrieving your Twitter friends')
     }
     else {
       unfollow(twitterFriends, whitelistedHandles)
