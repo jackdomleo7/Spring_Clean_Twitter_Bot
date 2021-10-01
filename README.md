@@ -29,7 +29,7 @@ This project comes with a `settings.json` file that is useful for debugging and 
 
 #### Feature 1: Unfollow inactive accounts
 
-The script will automatically unfollow inactive users based on the criteria set below. I have made it so you can create a list of whitelisted users that will never be unfollowed (typically your friends & family or seasonal accounts like Hacktoberfest). Having a public list of whitelisted may be problematic, so I have a private GitHub Gist with a JSON file of an array of whitelisted users, which the script will then retrieve.
+The script will automatically unfollow inactive users based on the criteria set below. I have made it so you can create a list of whitelisted users that will never be unfollowed (typically your friends & family or seasonal accounts like Hacktoberfest). Having a public list of whitelisted users may be problematic as some people may take offence if they see you are not whitelisting their account, so I have a private GitHub Gist with a JSON file of an array of whitelisted users, which the script will then retrieve.
 
 <small>As a disclaimer, this is not a growth hacking technique, but that will help me clean up my Twitter profile. I don't feel I have to follow everyone who follows me and I only want to follow accounts that are active.</small>
 
