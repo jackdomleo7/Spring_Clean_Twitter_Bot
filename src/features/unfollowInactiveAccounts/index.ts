@@ -41,10 +41,10 @@ async function getTwitterFriends(): Promise<Record<string, any>[] | undefined> {
   }
 }
 
-function unfollow(friends: Record<string, any>[], whitelistedHandles: string[]): void {
+async function unfollow(friends: Record<string, any>[], whitelistedHandles: string[]): Promise<void> {
   let friendsUnfollowed = 0
 
-  friends.forEach(async (friend: Record<string, any>) => {
+  await friends.forEach(async (friend: Record<string, any>) => {
     if (!whitelistedHandles.includes(friend.screen_name)) {
       const criteria: ICriteria = {
         tweetedInXMonths: hasTweetedInXMonths(friend)
@@ -79,7 +79,7 @@ export default async function unfollowInactiveAccounts(): Promise<void> {
       console.log(logSymbols.error, 'Skipping unfollowInactiveAccounts feature because something went wrong whilst retrieving your Twitter friends')
     }
     else {
-      unfollow(twitterFriends, whitelistedHandles)
+      await unfollow(twitterFriends, whitelistedHandles)
     }
   }
 }
