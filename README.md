@@ -58,7 +58,7 @@ You can easily start using this on your own Twitter account by clicking "Use thi
 
 ### Prerequisites
 
-- Node >= v12
+- Node >= v14
 - npm >= v7 (v6 will still work but v7 is desired since the `package-lock.json` is generated using lockfile v2 which is a new feature of npm v7)
 
 ### Steps
