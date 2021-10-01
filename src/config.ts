@@ -1,5 +1,6 @@
 import * as dotenv from 'dotenv'
 import { TwitterClient } from 'twitter-api-client'
+import { Octokit } from 'octokit'
 
 dotenv.config({ path: './.env' })
 
@@ -9,3 +10,5 @@ export const Twitter = new TwitterClient({
   accessToken: process.env.TWITTER_ACCESS_TOKEN!,
   accessTokenSecret: process.env.TWITTER_ACCESS_TOKEN_SECRET!,
 })
+
+export const GitHub = new Octokit()

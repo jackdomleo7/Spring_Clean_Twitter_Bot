@@ -1,5 +1,4 @@
 import * as dotenv from 'dotenv'
-import axios, { AxiosResponse } from 'axios'
 import logSymbols from 'log-symbols'
 import { AccountSettings, FriendsList } from 'twitter-api-client'
 import { User } from 'twitter-api-client/dist/interfaces/types/FriendsListTypes'
@@ -7,14 +6,14 @@ import { User } from 'twitter-api-client/dist/interfaces/types/FriendsListTypes'
 import { meetsAllCriteria, showUnmetCriteria, hasTweetedInXMonths } from './criteria'
 import { IWhiteList, ICriteria } from './types'
 
-import { Twitter } from '../../config'
+import { Twitter, GitHub } from '../../config'
 import settings from '../../settings.json'
 dotenv.config({ path: './.env' })
 
 async function getWhitelistedHandles(): Promise<string[]> {
   try {
-    const gist: AxiosResponse<Record<string, any>> = await axios.get(`https://api.github.com/gists/${process.env.WHITELIST_GIST_ID}`)
-    const handles = (JSON.parse(gist.data.files['account-whitelist.json'].content) as IWhiteList).handles
+    const gist = await GitHub.rest.gists.get({ gist_id: process.env.WHITELIST_GIST_ID! })
+    const handles = (JSON.parse(gist.data.files!['account-whitelist.json']!.content!) as IWhiteList).handles
     settings.features.unfollowInactiveAccounts.show_logging.whitelisted_handles.found && console.log(logSymbols.info, `${handles.length} whitelisted handles found`)
     return handles
   }
