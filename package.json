@@ -1,8 +1,8 @@
 {
   "name": "spring_clean_twitter_bot",
   "version": "1.0.0",
-  "description": "A Twitter bot to automatically unfollow inactive accounts.",
-  "main": "index.js",
+  "private": true,
+  "description": "A Twitter bot to automatically clean up my Twitter account.",
   "scripts": {
     "dev": "tsnd --respawn -r @babel/register src/index.ts",
     "build": "rimraf dist && babel ./src -d ./dist --extensions .ts && cpy src/settings.json dist"
