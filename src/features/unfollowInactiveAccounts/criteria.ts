@@ -1,4 +1,5 @@
 import { sub, differenceInMonths } from 'date-fns'
+import { User } from 'twitter-api-client/dist/interfaces/types/FriendsListTypes'
 
 import { ICriteria } from './types'
 import settings from '../../settings.json'
@@ -29,7 +30,7 @@ export function showUnmetCriteria(criteria: ICriteria): string {
 /* CRITERIA */
 /***********/
 
-export function hasTweetedInXMonths(friend: Record<string, any>): boolean | string {
+export function hasTweetedInXMonths(friend: User): boolean | string {
   const lastTweet = Date.parse(friend.status.created_at)
   const threeMonthsAgo = sub(new Date(), { months: settings.features.unfollowInactiveAccounts.criteria.tweetedInXMonths.no_of_months })
   if (differenceInMonths(lastTweet, threeMonthsAgo) >= 0) {
