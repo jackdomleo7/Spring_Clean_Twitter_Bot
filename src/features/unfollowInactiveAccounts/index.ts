@@ -64,35 +64,37 @@ async function getTwitterFriends(): Promise<User[]> {
 async function unfollow(friends: User[], whitelistedHandles: string[]): Promise<void> {
   let friendsUnfollowed = 0
 
-  await friends.forEach(async (friend: User) => {
-    if (!whitelistedHandles.includes(friend.screen_name)) {
-      const criteria: ICriteria = {
-        tweetedInXMonths: hasTweetedInXMonths(friend)
-      }
-
-      if (meetsAllCriteria(criteria)) {
-        settings.features.unfollowInactiveAccounts.show_logging.friends.kept && console.log(`Keep following @${friend.screen_name} (${friend.name}) because they meet the criteria`)
-      }
-      else {
-        try {
-          if (settings.features.unfollowInactiveAccounts.actually_unfollow_accounts) {
-            await Twitter.accountsAndUsers.friendshipsDestroy({ screen_name: friend.screen_name })
-          }
-          else {
-            await setTimeout(() => {}, 100) // Mocking the asynchronous API call during debugging
-          }
-
-          friendsUnfollowed++
-          settings.features.unfollowInactiveAccounts.show_logging.friends.unfollowed && console.log(`Unfollowing @${friend.screen_name} (${friend.name}) because they are not a whitelisted user, ${showUnmetCriteria(criteria)}`)
+  await Promise.all(
+    friends.map(async (friend: User) => {
+      if (!whitelistedHandles.includes(friend.screen_name)) {
+        const criteria: ICriteria = {
+          tweetedInXMonths: hasTweetedInXMonths(friend)
         }
-        catch(err: unknown) {
-          console.error(err)
+  
+        if (meetsAllCriteria(criteria)) {
+          settings.features.unfollowInactiveAccounts.show_logging.friends.kept && console.log(`Keep following @${friend.screen_name} (${friend.name}) because they meet the criteria`)
         }
+        else {
+          try {
+            if (settings.features.unfollowInactiveAccounts.actually_unfollow_accounts) {
+              await Twitter.accountsAndUsers.friendshipsDestroy({ screen_name: friend.screen_name })
+            }
+            else {
+              await setTimeout(() => {}, 5000) // Mocking the asynchronous API call during debugging - wait 5 seconds
+            }
+  
+            friendsUnfollowed++
+            settings.features.unfollowInactiveAccounts.show_logging.friends.unfollowed && console.log(`Unfollowing @${friend.screen_name} (${friend.name}) because they are not a whitelisted user, ${showUnmetCriteria(criteria)}`)
+          }
+          catch(err: unknown) {
+            console.error(err)
+          }
+        }
+      } else {
+        settings.features.unfollowInactiveAccounts.show_logging.friends.whitelisted && console.log(`Skipping @${friend.screen_name} (${friend.name}) because they are a whitelisted user`)
       }
-    } else {
-      settings.features.unfollowInactiveAccounts.show_logging.friends.whitelisted && console.log(`Skipping @${friend.screen_name} (${friend.name}) because they are a whitelisted user`)
-    }
-  })
+    })
+  )
 
   settings.features.unfollowInactiveAccounts.show_logging.friends.summary && console.log(logSymbols.success, `${friendsUnfollowed} of ${friends.length} friends unfollowed (you are now following ${friends.length - friendsUnfollowed} accounts)`)
 }
