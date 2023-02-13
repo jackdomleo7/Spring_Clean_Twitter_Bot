@@ -1,3 +1,7 @@
+**Archived since January 2023 due to [the Twitter API no longer being a paid sevrice](https://twitter.com/TwitterDev/status/1621026986784337922).**
+
+---
+
 [![Schedule bot monthly](https://github.com/jackdomleo7/Spring_Clean_Twitter_Bot/actions/workflows/cron-build.yml/badge.svg?branch=main)](https://github.com/jackdomleo7/Spring_Clean_Twitter_Bot/actions/workflows/cron-build.yml)
 
 # Spring Clean Twitter Bot
