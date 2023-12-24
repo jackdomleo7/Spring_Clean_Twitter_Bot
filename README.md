@@ -1,4 +1,4 @@
-**Archived since January 2023 due to [the Twitter API no longer being a paid sevrice](https://twitter.com/TwitterDev/status/1621026986784337922).**
+**Archived since January 2023 due to [the Twitter API no longer being a free sevrice](https://twitter.com/TwitterDev/status/1621026986784337922).**
 
 ---
 
